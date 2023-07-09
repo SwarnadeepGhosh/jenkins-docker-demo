@@ -7,5 +7,5 @@ RUN mvn -f /home/app/pom.xml clean package
 # Create an Image
 FROM openjdk:8-jdk-alpine
 EXPOSE 8080
-COPY --from=stage1 /home/app/target/docker-demo-java-0.0.1-SNAPSHOT.jar app.jar
+COPY --from=stage1 /home/app/target/*.jar app.jar
 ENTRYPOINT ["sh", "-c", "java -jar /app.jar"]

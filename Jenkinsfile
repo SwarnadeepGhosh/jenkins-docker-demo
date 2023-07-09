@@ -22,34 +22,39 @@ pipeline {
 
             }
         }
+
         stage('Compile') {
             steps {
                 sh 'mvn clean compile'
             }
         }
+
         stage('Test') {
             steps {
                 sh 'mvn test'
             }
         }
+
         stage('Package') {
             steps {
                 sh 'mvn package -DskipTests'
             }
         }
+
         stage('Build docker image') {
             steps {
-                sh 'docker build -t swarnadeepghosh/docker-demo-java:$env.BUILD_TAG'
+                // sh 'docker build -t swarnadeepghosh/docker-demo-java:$env.BUILD_TAG'
                 script {
                     dockerImage = docker.build("swarnadeepghosh/docker-demo-java:${env.BUILD_TAG}")
                 }
             }
         }
+
         stage('Push docker image') {
             steps {
                 script {
                     docker.withRegistry('', 'dockerhub_creds'){
-                        // dockerImage.push();
+                        dockerImage.push();
                         dockerImage.push('latest');
                     }
                 }
