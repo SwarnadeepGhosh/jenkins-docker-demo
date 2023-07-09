@@ -39,21 +39,19 @@ pipeline {
         }
         stage('Build docker image') {
             steps {
-                // sh 'docker build -t swarnadeepghosh/jenkins-docker-demo:$env.BUILD_TAG'
-                // script {
-                //     dockerImage = docker.build("swarnadeepghosh/jenkins-docker-demo:{$env.BUILD_TAG}")
-                // }
-                echo "Build docker image"
+                sh 'docker build -t swarnadeepghosh/docker-demo-java:$env.BUILD_TAG'
+                script {
+                    dockerImage = docker.build("swarnadeepghosh/docker-demo-java:{$env.BUILD_TAG}")
+                }
             }
         }
         stage('Push docker image') {
             steps {
-                // script {
-                //     docker.withRegistry('', 'dockerhub_creds'){
-                //         dockerImage.push('latest');
-                //     }
-                // }
-                echo "Push docker image"
+                script {
+                    docker.withRegistry('', 'dockerhub_creds'){
+                        dockerImage.push('latest');
+                    }
+                }
             }
         }
     }
