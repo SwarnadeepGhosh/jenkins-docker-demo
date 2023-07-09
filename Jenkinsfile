@@ -41,7 +41,7 @@ pipeline {
             steps {
                 sh 'docker build -t swarnadeepghosh/docker-demo-java:$env.BUILD_TAG'
                 script {
-                    dockerImage = docker.build("swarnadeepghosh/docker-demo-java:{$env.BUILD_TAG}")
+                    dockerImage = docker.build("swarnadeepghosh/docker-demo-java:${env.BUILD_TAG}")
                 }
             }
         }
@@ -49,6 +49,7 @@ pipeline {
             steps {
                 script {
                     docker.withRegistry('', 'dockerhub_creds'){
+                        // dockerImage.push();
                         dockerImage.push('latest');
                     }
                 }
